@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- =================================================================
+         1. BASIC PAGE SETTINGS (META TAGS)
+         These tell the browser how to display your page properly on both
+         computers and mobile phones.
+         ================================================================= -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- CHANGE WEBSITE TAB TITLE HERE -->
+    <title>PromptScholar | AI Question Refiner & Research Assistant</title>
+
+    <!-- Importing a clean, modern font called 'Inter' from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- importing the styles from style.css -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- start of navbar -->
+    <!-- =================================================================
+         1. NAVIGATION BAR
+         Contains your website name on the left and simple section links
+         on the right.
+         ================================================================= -->
+    <header class="navbar">
+        <div class="container nav-flex">
+            <!-- Website Logo / Name -->
+            <a href="#" class="logo">
+                Everything.ai
+                <span class="logo-badge">AI Research Assistant</span>
+            </a>
+
+            <!-- Navigation Links (Click to jump to sections on the page) -->
+            <ul class="nav-links">
+                <li><a href="input.html">1. Ask Question</a></li>
+                <li><a href="interaction.html">2. Refine Prompt</a></li>
+                <li><a href="result.html">3. Research &amp; Slides</a></li>
+            </ul>
+        </div>
+    </header>   
+<!-- code for navbar -->
+
+<!-- start of user input -->
+    <!-- =================================================================
+         2. HERO SECTION (MAIN QUESTION INPUT AREA)
+         This is where the user starts by typing their basic question.
+         ================================================================= -->
+    <section id="ask-section" class="hero-section">
+        <div class="container">
+            <div class="process-strip">
+                <div class="process-pill"><strong>1.</strong> Enter Basic Question</div>
+                <div class="process-pill"><strong>2.</strong> Answer Follow-Up Questions</div>
+                <div class="process-pill"><strong>3.</strong> Get High-Level Prompt</div>
+                <div class="process-pill"><strong>4.</strong> Download Docs, Slides &amp; Notes</div>
+            </div>  
+            <!-- reff 627 -->
+            
+            <!-- Small top badge -->
+            <span class="step-badge">Step 1: Start With Your Raw Question</span>
+
+            <!-- Main Heading (Use <span> to highlight words in blue) -->
+            <h1 class="hero-title">
+                Turn Any Simple Question Into <span>High-Level Research, Slides &amp; Notes</span>
+            </h1>
+
+            <!-- Subtitle explaining how the website works -->
+            <p class="hero-subtitle">
+                Enter your basic topic below. Our system asks smart clarifying questions, upgrades your question into an expert prompt, and generates complete study materials.
+            </p>
+
+            <!-- =========================================================
+                 [BACKEND DEVELOPER NOTE - FORM 1: RAW QUESTION INPUT]
+                 - Connect your backend route to `action="/api/analyze-question"`
+                 - Read the user's raw question using `name="raw_question"`
+                   or `id="raw-question-input"`
+                 ========================================================= -->
+            <div class="question-card">
+                <form id="raw-question-form" action="interaction.html" method="GET">
+                    
+                    <label for="raw-question-input" class="input-label">
+                        What topic or question do you want to research today?
+                    </label>
+
+                    <textarea
+                        id="raw-question-input" 
+                        name="raw_question" 
+                        class="main-textarea" 
+                        placeholder="Example: Explain how solar panels work and why they are important for renewable energy..."
+                        required></textarea>
+
+                    <div class="question-card-footer">
+                        <span class="helper-hint">
+                        💡 Tip: Write in simple words—our AI will help refine it next!
+                        </span>
+
+                        <!-- Submit Button for Step 1 -->
+
+                        <button type="submit" id="submit-raw-question-btn" class="btn-primary">
+                            Analyze &amp; Ask Related Questions
+                        </button>
+                    </div>
+                </form>
+            </div>
+                    <!-- this is from where i removed the basic steps pills and add above at 574 -->
+
+        </div>  
+    </section>
+<!-- the above code is for the user input and related section -->
+ <footer class="footer">
+        <div class="container">
+            <p class="footer-title">Everything.ai — AI Question Refiner &amp; Research Assistant</p>
+            <p>Built with clean HTML &amp; CSS. Ready for Backend API Integration.</p>
+        </div>
+    </footer>
+
+</body>
+</html> 

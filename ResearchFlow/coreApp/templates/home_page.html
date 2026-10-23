@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Turn your research questions into clear, ready-to-present work with ResearchFlow.">
+    <title>Researchable | Research, made ready</title>
+    <link rel="stylesheet" href="{% static 'home_page.css' %}">
+</head>
+<body>
+    <!-- Site navigation -->
+    <header class="site-header">
+        <a class="brand" href="{% url 'home_page' %}" aria-label="ResearchFlow home">
+            <span class="brand-mark" aria-hidden="true">R</span>
+            <span>Researchable</span>
+        </a>
+        <nav aria-label="Main navigation">
+            <a class="nav-link" href="#how-it-works">How it works</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Introductory message and primary action -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-content">
+                <p class="eyebrow"><span aria-hidden="true"></span> Your research, in flow</p>
+                <h1 id="hero-title">From research to ready-to-present, in minutes.</h1>
+                <a class="button button-primary" href="{% url 'research_questionnaire' %}">Get started</a>
+                <p class="hero-note">Less time pulling it all together. More time sharing what matters.</p>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+                <div class="paper paper-back"></div>
+                <div class="paper paper-front">
+                    <span class="paper-label">RESEARCH BRIEF</span>
+                    <span class="paper-line paper-line-long"></span>
+                    <span class="paper-line"></span>
+                    <span class="paper-line paper-line-short"></span>
+                    <span class="paper-chart"><span></span><span></span><span></span><span></span><span></span></span>
+                </div>
+                <span class="sparkle sparkle-one" aria-hidden="true">✳</span>
+                <span class="sparkle sparkle-two" aria-hidden="true">✦</span>
+            </div>
+        </section>
+
+        <!-- Simple overview of the product workflow -->
+        <section class="workflow section-wrap" id="how-it-works" aria-labelledby="workflow-title">
+            <div class="section-heading">
+                <p class="eyebrow">A clearer way to work</p>
+                <h2 id="workflow-title">How we do it</h2>
+                <p>One thoughtful process takes you from your first question to a polished final deliverable.</p>
+            </div>
+
+            <ol class="steps">
+                <li class="step-card">
+                    <span class="step-number">01</span>
+                    <div class="step-copy">
+                        <h3>Ask relevant questions</h3>
+                        <p>We start by understanding your topic, goals, audience, and preferred format. A few focused questions help make sure the research answers what you actually need to know.</p>
+                    </div>
+                </li>
+                <li class="step-card">
+                    <span class="step-number">02</span>
+                    <div class="step-copy">
+                        <h3>Build a high-level prompt</h3>
+                        <p>Your answers are shaped into a clear research brief, including the scope and direction of the work. This gives every part of the process a shared focus from the start.</p>
+                    </div>
+                </li>
+                <li class="step-card">
+                    <span class="step-number">03</span>
+                    <div class="step-copy">
+                        <h3>Extract the data</h3>
+                        <p>We gather information relevant to your brief and organize the useful findings. The aim is to make the research easier to follow, not bury you in disconnected facts.</p>
+                    </div>
+                </li>
+                <li class="step-card">
+                    <span class="step-number">04</span>
+                    <div class="step-copy">
+                        <h3>Build your research and presentation</h3>
+                        <p>The findings are brought together into a structured research report and a presentation that communicates the key ideas clearly. Both are built around the needs you shared.</p>
+                    </div>
+                </li>
+                <li class="step-card">
+                    <span class="step-number">05</span>
+                    <div class="step-copy">
+                        <h3>Deliver it to you</h3>
+                        <p>Your completed research and presentation are delivered together, ready for you to review, refine, and share with your audience.</p>
+                    </div>
+                </li>
+            </ol>
+        </section>
+    </main>
+
+    <!-- Small closing note -->
+    <footer class="site-footer">
+        <a class="brand brand-footer" href="{% url 'home_page' %}">
+            <span class="brand-mark" aria-hidden="true">R</span>
+            <span>ResearchFlow</span>
+        </a>
+        <p>Make room for the ideas that matter.</p>
+    </footer>
+    <script>
+        // Reveal each workflow step as it enters the viewport.
+        if ('IntersectionObserver' in window) {
+            document.documentElement.classList.add('js-scroll-reveal');
+
+            const stepObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            document.querySelectorAll('.step-card').forEach((step) => {
+                stepObserver.observe(step);
+            });
+        }
+    </script>
+</body>
+</html>

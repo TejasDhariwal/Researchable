@@ -1,0 +1,5 @@
+api key = [
+    key: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,
+    name:default,
+    credits:1000
+]

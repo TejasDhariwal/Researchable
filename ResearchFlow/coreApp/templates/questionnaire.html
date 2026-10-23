@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tell Researchable what you need, and shape research around your goals.">
+    <title>Get started | Researchable</title>
+    <link rel="stylesheet" href="{% static 'home_page.css' %}">
+    <link rel="stylesheet" href="{% static 'questionnaire.css' %}">
+</head>
+<body class="questionnaire-page">
+    <header class="site-header">
+        <a class="brand" href="{% url 'home_page' %}" aria-label="Researchable home">
+            <span class="brand-mark" aria-hidden="true">R</span>
+            <span>Researchable</span>
+        </a>
+        <a class="nav-link" href="{% url 'home_page' %}">Back to home</a>
+    </header>
+
+    <main class="questionnaire-main">
+        {% if submitted %}
+            <section class="completion-card" aria-labelledby="completion-title">
+                <span class="completion-mark" aria-hidden="true">✓</span>
+                <p class="eyebrow">100% complete</p>
+                <h1 id="completion-title">All set.</h1>
+                <p>Now let's start the research.</p>
+                <a class="button button-primary" href="{% url 'research_output' %}">Create</a>
+            </section>
+        {% else %}
+            <div class="questionnaire-heading">
+                <p class="eyebrow">A few thoughtful questions</p>
+                <h1>Let's shape your research.</h1>
+                <p>Share what you have in mind. You can move back to change an answer at any time.</p>
+            </div>
+
+            <section class="progress-panel" aria-label="Questionnaire progress">
+                <div class="progress-copy">
+                    <span id="progress-step">Questions 1–2 of 10</span>
+                    <span id="progress-message" aria-live="polite">Let's start with your idea.</span>
+                </div>
+                <div
+                    class="progress-track"
+                    id="progress-track"
+                    role="progressbar"
+                    aria-label="Questionnaire progress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0">
+                    <span class="progress-fill" id="progress-fill"></span>
+                </div>
+                <span class="progress-percent" id="progress-percent">0%</span>
+            </section>
+
+            {% if error %}
+                <p class="form-error" role="alert">{{ error }}</p>
+            {% endif %}
+
+            <form class="questionnaire-form" id="questionnaire-form" method="post" novalidate>
+                {% csrf_token %}
+                <section class="question-step is-active" data-step="0" aria-label="Questions 1 and 2">
+                    <article class="question-card">
+                        <span class="question-number">01</span>
+                        <label class="question-title" for="topic">What do you want to research?</label>
+                        <p class="question-description">Start with a topic or question you would like to explore.</p>
+                        <input class="text-input" id="topic" name="topic" type="text" maxlength="300" placeholder="Applications of AI in healthcare" data-required>
+                    </article>
+                    <fieldset class="question-card choice-card role-card">
+                        <legend class="question-title"><span class="question-number">02</span>What role should the AI adopt for this research?</legend>
+                        <p class="question-description">Choose the perspective that best fits your research.</p>
+                        <div class="choice-list role-choice-list">
+                            <label class="choice role-choice">
+                                <input type="radio" name="role" value="academic_researcher" data-required>
+                                <span><strong>Academic researcher</strong><span class="role-description">Conduct evidence-based research and synthesize credible sources.</span></span>
+                            </label>
+                            <label class="choice role-choice">
+                                <input type="radio" name="role" value="subject_matter_expert">
+                                <span><strong>Subject matter expert</strong><span class="role-description">Provide deep, specialized knowledge of the topic.</span></span>
+                            </label>
+                            <label class="choice role-choice">
+                                <input type="radio" name="role" value="critical_analyst">
+                                <span><strong>Critical analyst</strong><span class="role-description">Compare viewpoints, challenge claims, and identify research gaps.</span></span>
+                            </label>
+                            <label class="choice role-choice">
+                                <input type="radio" name="role" value="industry_analyst">
+                                <span><strong>Industry analyst</strong><span class="role-description">Focus on market trends, real-world applications, and industry insights.</span></span>
+                            </label>
+                            <label class="choice role-choice">
+                                <input type="radio" name="role" value="science_communicator">
+                                <span><strong>Science communicator</strong><span class="role-description">Explain complex ideas clearly for easier understanding.</span></span>
+                            </label>
+                            <label class="choice role-choice">
+                                <input type="radio" name="role" value="research_assistant">
+                                <span><strong>Research assistant</strong><span class="role-description">Organize information, summarize findings, and structure the report.</span></span>
+                            </label>
+                            <label class="choice role-choice">
+                                <input type="radio" name="role" value="other" data-other-toggle="role-other">
+                                <span><strong>Other</strong><span class="role-description">Define a custom AI role.</span></span>
+                            </label>
+                        </div>
+                        <input class="text-input conditional-input" id="role-other" name="role_other" type="text" maxlength="200" placeholder="Describe the custom AI role" data-required-when="role:other" hidden>
+                    </fieldset>
+                </section>
+
+                <section class="question-step" data-step="1" aria-label="Questions 3 and 4" hidden>
+                    <article class="question-card">
+                        <span class="question-number">03</span>
+                        <label class="question-title" for="objective">What do you want to achieve through this research?</label>
+                        <p class="question-description">Tell us what you want the research to answer or accomplish.</p>
+                        <textarea class="text-input text-area" id="objective" name="objective" maxlength="1000" placeholder="Compare current AI diagnostic methods and their limitations." data-required></textarea>
+                    </article>
+                    <fieldset class="question-card choice-card">
+                        <legend class="question-title"><span class="question-number">04</span>Which aspects should the research cover?</legend>
+                        <p class="question-description">Select all that apply.</p>
+                        <div class="choice-list">
+                            <label class="choice"><input type="checkbox" name="scope" value="fundamental_background" checked><span>Fundamental and background</span></label>
+                            <label class="choice"><input type="checkbox" name="scope" value="current_developments" checked><span>Current developments</span></label>
+                            <label class="choice"><input type="checkbox" name="scope" value="applications_use_cases"><span>Applications and use cases</span></label>
+                            <label class="choice"><input type="checkbox" name="scope" value="benefits_opportunities"><span>Benefits and opportunities</span></label>
+                            <label class="choice"><input type="checkbox" name="scope" value="challenges_limitations"><span>Challenges and limitations</span></label>
+                            <label class="choice"><input type="checkbox" name="scope" value="case_studies" checked><span>Case studies and real-world examples</span></label>
+                            <label class="choice"><input type="checkbox" name="scope" value="future_trends" checked><span>Future trends</span></label>
+                            <label class="choice"><input type="checkbox" name="scope" value="other" data-other-toggle="scope-other"><span>Other aspect</span></label>
+                        </div>
+                        <input class="text-input conditional-input" id="scope-other" name="scope_other" type="text" maxlength="200" placeholder="Specify another aspect to cover" data-required-when="scope:other" hidden>
+                    </fieldset>
+                </section>
+
+                <section class="question-step" data-step="2" aria-label="Questions 5 and 6" hidden>
+                    <fieldset class="question-card choice-card">
+                        <legend class="question-title"><span class="question-number">05</span>Who is this research intended for?</legend>
+                        <p class="question-description">Choose the audience that best fits your needs.</p>
+                        <div class="choice-list">
+                            <label class="choice"><input type="radio" name="audience" value="school_students" data-required><span>School students</span></label>
+                            <label class="choice"><input type="radio" name="audience" value="undergraduate_students"><span>Undergraduate students</span></label>
+                            <label class="choice"><input type="radio" name="audience" value="postgraduate_students"><span>Postgraduate students</span></label>
+                            <label class="choice"><input type="radio" name="audience" value="researchers_experts"><span>Researchers / experts</span></label>
+                            <label class="choice"><input type="radio" name="audience" value="general_audience"><span>General audience</span></label>
+                            <label class="choice"><input type="radio" name="audience" value="business_professionals"><span>Business / industry professionals</span></label>
+                            <label class="choice"><input type="radio" name="audience" value="other" data-other-toggle="audience-other"><span>Other</span></label>
+                        </div>
+                        <input class="text-input conditional-input" id="audience-other" name="audience_other" type="text" maxlength="200" placeholder="Describe your intended audience" data-required-when="audience:other" hidden>
+                    </fieldset>
+                    <fieldset class="question-card choice-card">
+                        <legend class="question-title"><span class="question-number">06</span>What kinds of sources should support the research?</legend>
+                        <p class="question-description">Select all the source types you would like us to prioritize.</p>
+                        <div class="choice-list">
+                            <label class="choice"><input type="checkbox" name="evidence" value="peer_reviewed_papers"><span>Peer-reviewed research papers</span></label>
+                            <label class="choice"><input type="checkbox" name="evidence" value="academic_books_reviews"><span>Academic books and review articles</span></label>
+                            <label class="choice"><input type="checkbox" name="evidence" value="government_reports"><span>Government and official reports</span></label>
+                            <label class="choice"><input type="checkbox" name="evidence" value="industry_reports"><span>Industry reports and statistics</span></label>
+                            <label class="choice"><input type="checkbox" name="evidence" value="reputable_news"><span>Reputable news sources</span></label>
+                            <label class="choice"><input type="checkbox" name="evidence" value="case_studies"><span>Case studies and documented examples</span></label>
+                            <label class="choice"><input type="checkbox" name="evidence" value="other" data-other-toggle="evidence-other"><span>Other source type</span></label>
+                        </div>
+                        <input class="text-input conditional-input" id="evidence-other" name="evidence_other" type="text" maxlength="200" placeholder="Specify a preferred source type" data-required-when="evidence:other" hidden>
+                    </fieldset>
+                </section>
+
+                <section class="question-step" data-step="3" aria-label="Questions 7 and 8" hidden>
+                    <fieldset class="question-card choice-card">
+                        <legend class="question-title"><span class="question-number">07</span>How deeply should the research evaluate and challenge the evidence?</legend>
+                        <p class="question-description">Choose the level of critical analysis you prefer.</p>
+                        <div class="choice-list">
+                            <label class="choice"><input type="radio" name="critical_analysis" value="descriptive_overview"><span>Descriptive overview — explain the topic</span></label>
+                            <label class="choice"><input type="radio" name="critical_analysis" value="balanced_analysis" checked><span>Balanced analysis — compare benefits, risks, and limitations</span></label>
+                            <label class="choice"><input type="radio" name="critical_analysis" value="deep_critical_evaluation"><span>Deep critical evaluation — assess evidence, conflicting findings, and research gaps</span></label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="question-card choice-card">
+                        <legend class="question-title"><span class="question-number">08</span>What would you like Researchable to generate?</legend>
+                        <p class="question-description">Select all the deliverables you need.</p>
+                        <div class="choice-list">
+                            <label class="choice"><input type="checkbox" name="outputs" value="research_report" checked><span>Research report</span></label>
+                            <label class="choice"><input type="checkbox" name="outputs" value="presentation_slides" checked><span>Presentation slides</span></label>
+                            <label class="choice"><input type="checkbox" name="outputs" value="executive_summary" checked><span>Executive summary</span></label>
+                            <label class="choice"><input type="checkbox" name="outputs" value="reference_list" checked><span>Reference list / bibliography</span></label>
+                        </div>
+                    </fieldset>
+                </section>
+
+                <section class="question-step" data-step="4" aria-label="Questions 9 and 10" hidden>
+                    <fieldset class="question-card choice-card">
+                        <legend class="question-title"><span class="question-number">09</span>How detailed should the report be?</legend>
+                        <p class="question-description">Choose a target length for the research report.</p>
+                        <div class="choice-list">
+                            <label class="choice"><input type="radio" name="report_word_count" value="brief"><span>Brief — 500 words</span></label>
+                            <label class="choice"><input type="radio" name="report_word_count" value="standard"><span>Standard — 1,000 words</span></label>
+                            <label class="choice"><input type="radio" name="report_word_count" value="detailed" checked><span>Detailed — 1,500 words</span></label>
+                            <label class="choice"><input type="radio" name="report_word_count" value="comprehensive"><span>Comprehensive — 2,500 words</span></label>
+                            <label class="choice"><input type="radio" name="report_word_count" value="custom" data-other-toggle="report-word-count-custom"><span>Other / custom length</span></label>
+                        </div>
+                        <input class="text-input conditional-input" id="report-word-count-custom" name="report_word_count_custom" type="number" min="1" max="50000" placeholder="What length do you desire? (words)" data-required-when="report_word_count:custom" hidden>
+                    </fieldset>
+                    <fieldset class="question-card choice-card">
+                        <legend class="question-title"><span class="question-number">10</span>How many slides should the presentation contain?</legend>
+                        <p class="question-description">Choose a target size for the presentation.</p>
+                        <div class="choice-list">
+                            <label class="choice"><input type="radio" name="slide_count" value="quick_overview"><span>5 slides — quick overview</span></label>
+                            <label class="choice"><input type="radio" name="slide_count" value="standard_presentation" checked><span>8 slides — standard presentation</span></label>
+                            <label class="choice"><input type="radio" name="slide_count" value="detailed_presentation"><span>12 slides — detailed presentation</span></label>
+                            <label class="choice"><input type="radio" name="slide_count" value="comprehensive_presentation"><span>15 slides — comprehensive presentation</span></label>
+                            <label class="choice"><input type="radio" name="slide_count" value="custom" data-other-toggle="slide-count-custom"><span>Other / custom count</span></label>
+                        </div>
+                        <input class="text-input conditional-input" id="slide-count-custom" name="slide_count_custom" type="number" min="1" max="100" placeholder="How many slides do you want?" data-required-when="slide_count:custom" hidden>
+                    </fieldset>
+                </section>
+
+                <div class="questionnaire-footer">
+                    <button class="button button-secondary" id="previous-button" type="button" hidden>Previous</button>
+                    <span class="form-hint">Your answers are saved when you finish.</span>
+                    <button class="button button-primary" id="next-button" type="button">Next</button>
+                    <button class="button button-primary" id="submit-button" type="submit" hidden>Submit</button>
+                </div>
+                <p class="step-error" id="step-error" role="alert" hidden></p>
+            </form>
+        {% endif %}
+    </main>
+
+    <footer class="site-footer">
+        <a class="brand brand-footer" href="{% url 'home_page' %}">
+            <span class="brand-mark" aria-hidden="true">R</span>
+            <span>ResearchFlow</span>
+        </a>
+        <p>Make room for the ideas that matter.</p>
+    </footer>
+    <script src="{% static 'questionnaire.js' %}" defer></script>
+</body>
+</html>

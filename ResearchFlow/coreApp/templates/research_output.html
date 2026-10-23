@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Review your research summary, detailed findings, sources, and presentation.">
+    <title>{{ title }} | Researchable</title>
+    <link rel="stylesheet" href="{% static 'home_page.css' %}">
+    <link rel="stylesheet" href="{% static 'research_output.css' %}">
+</head>
+<body>
+    <!-- Site navigation -->
+    <header class="site-header">
+        <a class="brand" href="{% url 'home_page' %}" aria-label="Researchable home">
+            <span class="brand-mark" aria-hidden="true">R</span>
+            <span>Researchable</span>
+        </a>
+        <a class="nav-link" href="{% url 'home_page' %}">Back to home</a>
+    </header>
+
+    <main class="research-output">
+        <!-- Report title and introduction -->
+        <section class="output-heading" aria-labelledby="output-title">
+            <p class="eyebrow"><span aria-hidden="true"></span> Your research brief</p>
+            <h1 id="output-title">{{ title }}</h1>
+            <p class="output-intro">A considered overview of the key findings, supporting sources, and next steps.</p>
+        </section>
+
+        <!-- Executive summary -->
+        <section class="summary-card" aria-labelledby="summary-title">
+            <p class="section-kicker">At a glance</p>
+            <h2 id="summary-title">Executive summary</h2>
+            <p class="summary-copy">{{ executive_summary }}</p>
+        </section>
+
+        <!-- Detailed research findings -->
+        <section class="report-section" aria-labelledby="report-title">
+            <div class="section-heading">
+                <p class="section-kicker">The evidence</p>
+                <h2 id="report-title">Detailed research</h2>
+            </div>
+
+            <div class="report-sections">
+                {% for report_section in report_sections %}
+                    <article class="finding-card">
+                        <h3>{{ report_section.heading }}</h3>
+                        <ol class="finding-list">
+                            {% for pointer in report_section.content %}
+                                <li>{{ pointer }}</li>
+                            {% endfor %}
+                        </ol>
+
+                        <div class="source-list">
+                            <h4>Sources for this section</h4>
+                            <ul>
+                                {% for source_url in report_section.source_urls %}
+                                    <li><a href="{{ source_url }}">{{ source_url }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Research limitations -->
+        <section class="limitations-card" aria-labelledby="limitations-title">
+            <p class="section-kicker">Context to keep in mind</p>
+            <h2 id="limitations-title">Limitations</h2>
+            <ul>
+                {% for limitation in limitations %}
+                    <li>{{ limitation }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Full reference list -->
+        <section class="references-section" aria-labelledby="references-title">
+            <div class="section-heading">
+                <p class="section-kicker">Explore further</p>
+                <h2 id="references-title">References</h2>
+            </div>
+            <div class="references-table-wrap">
+                <table class="references-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reference in references %}
+                            <tr>
+                                <td>{{ reference.title }}</td>
+                                <td><a href="{{ reference.url }}">{{ reference.url }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Presentation download -->
+        <section class="presentation-card" aria-labelledby="presentation-title">
+            <div>
+                <p class="section-kicker">Ready to share</p>
+                <h2 id="presentation-title">Take the findings into your next presentation.</h2>
+                <p>Your slide deck brings the research into a clear, presentation-ready format.</p>
+            </div>
+            <a class="button button-primary download-button" href="{% url 'download_presentation' %}">
+                Download presentation <span aria-hidden="true">(.pptx)</span>
+            </a>
+        </section>
+    </main>
+</body>
+</html>
